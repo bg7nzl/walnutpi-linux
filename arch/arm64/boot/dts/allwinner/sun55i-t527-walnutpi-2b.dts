@@ -196,7 +196,7 @@
 	vcc-pf-supply = <&reg_pio1_8>;
 	vcc-pfo-supply = <&reg_pio3_3>;
 	vcc-pd-supply = <&reg_dcdc4>;
-	vcc-pe-supply = <&reg_pio1_8>;
+	vcc-pe-supply = <&reg_dcdc4>;
 	vcc-pi-supply = <&reg_dcdc4>;
 	vcc-pj-supply = <&reg_dcdc4>;
 	vcc-pk-supply = <&reg_dcdc4>;

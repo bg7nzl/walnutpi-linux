@@ -19,11 +19,11 @@
 &vind0 {
 	csi_top = <360000000>;
 	csi_isp = <300000000>;
-	vind_mclkpin-supply = <&reg_bldo3>; /* vcc-pe */
+	vind_mclkpin-supply = <&reg_cldo1>; /* vcc-pe */
 	vind_mclkpin_vol = <1800000>;
-	vind_mcsipin-supply = <&reg_bldo3>; /* vcc-pk */
+	vind_mcsipin-supply = <&reg_cldo1>; /* VCC-MCSI */
 	vind_mcsipin_vol = <1800000>;
-	vind_mipipin-supply = <&reg_bldo3>; /* vcc-mcsi */
+	vind_mipipin-supply = <&reg_cldo1>; /* vcc-mcsi */
 	vind_mipipin_vol = <1800000>;
 	status = "okay";
 
@@ -40,6 +40,7 @@
 
 	isp00:isp@5900000 {
 		work_mode = <0>;
+		status = "okay";
 	};
 
 	isp01:isp@58ffffc {
@@ -156,7 +157,7 @@
 	sensor0:sensor@5812000 {
 		device_type = "sensor0";
 
-		sensor0_mname = "ov5648_mipi";
+		sensor0_mname = "ov5647_mipi";
 		sensor0_twi_addr = <0x6c>;
 		// sensor0_mname = "imx219";
 		// sensor0_twi_addr = <0x20>;
@@ -165,8 +166,8 @@
 		sensor0_twi_cci_id = <3>;
 		sensor0_mclk_id = <0>;
 		sensor0_pos = "rear";
-		sensor0_isp_used = <0>;
-		sensor0_fmt = <0>;
+		sensor0_isp_used = <1>;
+		sensor0_fmt = <1>;
 		sensor0_stby_mode = <0>;
 		sensor0_vflip = <0>;
 		sensor0_hflip = <0>;
@@ -182,7 +183,7 @@
 		sensor0_power_en = <&pio PK 22 GPIO_ACTIVE_HIGH>;
 		sensor0_reset = <>;
 		sensor0_pwdn = <>;
-		status = "okay";
+		status = "disabled";
 	};
 
 	sensor1:sensor@5812010 {
@@ -208,7 +209,21 @@
 		sensor1_pwdn = <>;
 		status = "disabled";
 	};
-
+	sensor_list0:sensor_list@5812040 {
+		twi_cci_id = <3>;
+		power_en = <&pio PK 22 GPIO_ACTIVE_HIGH>;
+		sensor00_mname = "ov5647_mipi";
+		sensor00_twi_addr = <0x6c>;
+		sensor00_isp_used = <1>;
+		sensor00_fmt = <1>;
+		sensor00_type = <1>;
+		sensor00_hflip =  <0>;
+		sensor00_vflip = <0>;
+		sensor00_act_used = <>;
+		sensor00_act_name = "";
+		sensor00_act_twi_addr = <>;
+		status	= "okay";
+	};
 	vinc00:vinc@5830000 {
 		vinc0_csi_sel = <0>;
 		vinc0_mipi_sel = <0>;
@@ -217,7 +232,7 @@
 		vinc0_tdm_rx_sel = <0>;
 		vinc0_rear_sensor_sel = <0>;
 		vinc0_front_sensor_sel = <0>;
-		vinc0_sensor_list = <0>;
+		vinc0_sensor_list = <1>;
 		device_id = <0>;
 		work_mode = <0x0>;
 		status = "okay";
@@ -273,7 +288,7 @@
 		vinc4_sensor_list = <0>;
 		device_id = <4>;
 		work_mode = <0x0>;
-		status = "okay";
+		status = "disabled";
 	};
 
 	vinc11:vinc@5830ffc {
@@ -326,7 +341,7 @@
 		vinc8_sensor_list = <0>;
 		device_id = <8>;
 		work_mode = <0x0>;
-		status = "okay";
+		status = "disabled";
 	};
 
 	vinc21:vinc@5831ffc {
@@ -379,7 +394,7 @@
 		vinc12_sensor_list = <0>;
 		device_id = <12>;
 		work_mode = <0x0>;
-		status = "okay";
+		status = "disabled";
 	};
 
 	vinc31:vinc@5832ffc {
