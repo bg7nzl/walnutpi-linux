@@ -19,6 +19,7 @@ obj-$(CONFIG_SENSOR_NVP6158C)			+= nvp6158/
 obj-$(CONFIG_SENSOR_RN6854M)			+= rn6854m_mipi.o
 obj-$(CONFIG_SENSOR_OV5640)			+= ov5640.o
 obj-$(CONFIG_SENSOR_OV5648_MIPI)	        += ov5648_mipi.o
+obj-$(CONFIG_SENSOR_OV5647_MIPI)	        += ov5647_mipi.o
 obj-$(CONFIG_SENSOR_OV2775)			+= ov2775_mipi.o
 obj-$(CONFIG_SENSOR_GC2145)			+= gc2145.o
 obj-$(CONFIG_SENSOR_GC0310)			+= gc0310_mipi.o

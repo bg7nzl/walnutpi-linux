@@ -62,6 +62,10 @@ config SENSOR_OV5640
 	tristate "use ov5640 driver"
 	default n
 
+config SENSOR_OV5647_MIPI
+    tristate "use ov5647_mipi driver"
+    default n
+
 config SENSOR_OV5648_MIPI
     tristate "use ov5648_mipi driver"
     default n
