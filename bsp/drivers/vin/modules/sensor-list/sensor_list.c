@@ -30,7 +30,22 @@ static int get_value_int(struct device_node *np, const char *name,
 	vin_log(VIN_LOG_CONFIG, "%s = %x\n", name, *value);
 	return 0;
 }
+static int get_gpio_info(struct device_node *np, const char *name,
+			 int *gpio)
+{
+	int gnum;
+	enum of_gpio_flags gc;
 
+	gnum = of_get_named_gpio_flags(np, name, 0, &gc);
+	if (!gpio_is_valid(gnum)) {
+		vin_log(VIN_LOG_CONFIG, "fetch %s from device_tree failed\n", name);
+		return -ENODEV;
+	}
+	*gpio = gnum;
+	vin_log(VIN_LOG_CONFIG, "fetch %s gpio = %d\n", name, *gpio);
+
+	return 0;
+}
 static int get_value_string(struct device_node *np, const char *name,
 			    char *string)
 {
@@ -64,6 +79,18 @@ static void set_csi_sel(struct sensor_list *sensors, const char *name, struct de
 	get_value_int(node, name, &sensors->csi_sel);
 }
 
+static void set_isp_used(struct sensor_list *sensors, const char *name, struct device_node *node, int sel)
+{
+	get_value_int(node, name, &sensors->inst[sel].is_isp_used);
+}
+static void set_fmt(struct sensor_list *sensors, const char *name, struct device_node *node, int sel)
+{
+	get_value_int(node, name, &sensors->inst[sel].is_bayer_raw);
+}
+static void set_power_en(struct sensor_list *sensors, const char *name, struct device_node *node, int sel)
+{
+	get_gpio_info(node, name, &sensors->gpio[POWER_EN]);
+}
 static void set_mname(struct sensor_list *sensors, const char *name, struct device_node *node, int sel)
 {
 	get_value_string(node, name, sensors->inst[sel].cam_name);
@@ -72,6 +99,10 @@ static void set_mname(struct sensor_list *sensors, const char *name, struct devi
 static void set_twi_addr(struct sensor_list *sensors, const char *name, struct device_node *node, int sel)
 {
 	get_value_int(node, name, &sensors->inst[sel].cam_addr);
+}
+static void set_twi_cci_id(struct sensor_list *sensors, const char *name, struct device_node *node, int sel)
+{
+	get_value_int(node, name, &sensors->sensor_bus_sel);
 }
 
 static void set_sensor_type(struct sensor_list *sensors, const char *name, struct device_node *node, int sel)
@@ -108,6 +139,10 @@ static struct fetch_sl fetch_list[] = {
 /*	{"used", 1, set_used},
 	{"device_sel", 1, set_device_sel}, */
 	{"csi_sel", 1, set_csi_sel},
+	{"twi_cci_id", 1, set_twi_cci_id},
+	{"power_en", 1, set_power_en},
+	{"isp_used", 1, set_isp_used},
+	{"fmt", 1, set_fmt},
 	{"mname", 1, set_mname},
 	{"twi_addr", 1, set_twi_addr},
 	{"type", 1, set_sensor_type},
@@ -129,7 +164,7 @@ int sensor_list_get_parms(struct sensor_list *sensors, struct device_node *node,
 
 	for (j = 0; j < sensors->detect_num; j++) {
 		for (i = 0; i < FETCH_SIZE; i++) {
-			if (i < 1)
+			if (i < 3)
 				sprintf(property, "%s", fetch_list[i].sub);
 			else
 				sprintf(property, "%s%d%d_%s", "sensor", sel, j, fetch_list[i].sub);

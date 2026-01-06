@@ -3711,6 +3711,8 @@ static int vin_open(struct file *file)
 
 	vin_log(VIN_LOG_VIDEO, "video%d open\n", vinc->id);
 	mutex_unlock(&cap->vdev.entity.graph_obj.mdev->graph_mutex);
+
+   	vidioc_s_input(file, NULL, 0);
 	return 0;
 }
 
